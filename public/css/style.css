@@ -1,0 +1,96 @@
+[class^='select2'] {
+    border-radius: 0px !important;
+}
+.select2-selection {
+    height: 34px !important;
+}
+.quiz-card {
+    padding: 5px 20px 20px 20px;
+    box-shadow: 0 7px 15px 0 rgba(0,0,0,0.1);
+    background-color: #FFF;
+    border-top: 3px solid rgba(38, 166, 154, 0.7);
+    margin-bottom: 30px;
+}
+.quiz-name {
+    font-size: 22px;
+}
+.quiz-card p {
+    font-size: 13px;
+}
+.myButton {
+    margin-left: 42px;
+}
+.btn-wave,
+button.btn-wave {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    vertical-align: middle;
+    z-index: 1;
+    -webkit-transition: .3s ease-out;
+    transition: .3s ease-out;
+    border: none;
+    text-decoration: none;
+    color: #fff;
+    background-color: #26a69a;
+    text-align: center;
+    letter-spacing: .5px;
+    -webkit-transition: .2s ease-out;
+    transition: .2s ease-out;
+    cursor: pointer;
+}
+.btn-wave:hover,
+.btn-wave:active,
+.btn-wave:focus,
+.btn-wave.hover {
+    background-color: #2bbbad;
+    color: #FFF !important;
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);
+    outline: none !important;
+}
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 10mm;
+    margin: 10mm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 1cm;
+    border: 5px red solid;
+    height: 257mm;
+    outline: 2cm #FFEAEA solid;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    html, body {
+        width: 210mm;
+        height: 297mm;
+    }
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}
+#divTranscript {
+    min-height: 297mm;
+}
