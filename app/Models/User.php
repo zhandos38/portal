@@ -63,7 +63,7 @@ class User extends Model
     }
 
     public function expelled(){
-        return $this->hasOne(ExpelledStudent::class,"student_id","id");
+        return $this->hasOne(ExpelledStudent::class,'student_id','id');
     }
 
     public static function getTeacher($user){
@@ -71,7 +71,7 @@ class User extends Model
         if(count($user)>0){
             foreach ($user as $item){
                 if($item->infos){
-                    $teachers[$item['id']] = $item->infos->lastName . " ". $item->infos->firstName ." ". $item->infos->middleName;
+                    $teachers[$item['id']] = $item->infos->lastName . ' '. $item->infos->firstName .' '. $item->infos->middleName;
                 }
                 else{
                     $teachers[$item['id']] = $item->login;
@@ -80,7 +80,7 @@ class User extends Model
             }
         }
         else{
-            $teachers[0] = "Создайте учителей!";
+            $teachers[0] = 'Создайте учителей!';
         }
         return $teachers;
     }
@@ -128,27 +128,29 @@ class User extends Model
 
     public static function makeData($input)
     {
-        if($input["role_id"] == 1 || $input["role_id"] == 6 ){
-            $input["faculty_id"] = null;
-            $input["department_id"] = null;
-            $input["group_id"] = null;
-        }
-        if($input["role_id"] == 2 || $input["role_id"] == 3){
-            $input["department_id"] = null;
-            $input["group_id"] = null;
-        }
-        if($input["role_id"] == 4){
-            $faculty = Department::where("id",$input["department_id"])->first();
-            $input["faculty_id"] = $faculty->faculty_id;
+        if($input['role_id'] == 1 || $input['role_id'] == 6 ){
+            $input['faculty_id'] = null;
+            $input['department_id'] = null;
             $input['group_id'] = null;
         }
-        if($input["role_id"] == 5){
-            $department = Group::where("id",$input["group_id"])->first();
-            $faculty = Department::where("id",$department->department_id)->first();
-            $input["faculty_id"] = $faculty->faculty_id;
-            $input["department_id"] = $department->department_id;
+        if($input['role_id'] == 2 || $input['role_id'] == 3){
+            $input['department_id'] = null;
+            $input['group_id'] = null;
         }
-        $input["password"] = bcrypt($input["password"]);
+        if($input['role_id'] == 4){
+            $faculty = Department::where('id',$input['department_id'])->first();
+            $input['faculty_id'] = $faculty->faculty_id;
+            $input['group_id'] = null;
+        }
+        if($input['role_id'] == 5){
+            $department = Group::where('id', $input['group_id'])->first();
+            if (!empty($department)) {
+                $faculty = Department::where('id', $department->department_id)->first();
+                $input['faculty_id'] = $faculty->faculty_id;
+                $input['department_id'] = $department->department_id;
+            }
+        }
+        $input['password'] = bcrypt($input['password']);
         return $input;
     }
 }

@@ -18,6 +18,7 @@ use Flash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Response;
+use Symfony\Component\VarDumper\VarDumper;
 
 class UserController extends AppBaseController
 {
@@ -60,17 +61,17 @@ class UserController extends AppBaseController
     {
         if (Auth::user()->role_id == 1){
             $roles = Roles::pluck('title', 'id')->all();
-            $faculties = Faculty::pluck("title","id")->all();
-            $departments = Department::pluck("title","id")->all();
-            $groups = Group::pluck("title","id")->all();
+            $faculties = Faculty::pluck('title','id')->all();
+            $departments = Department::pluck('title','id')->all();
+            $groups = Group::pluck('title','id')->all();
         }
         if (Auth::user()->role_id == 2) {
             $roles = Roles::whereNotIn('id', [1,2,6,5])->pluck('title', 'id')->all();
-            $faculties = Faculty::where("id",Auth::user()->faculty_id)->pluck("title","id")->all();
+            $faculties = Faculty::where('id',Auth::user()->faculty_id)->pluck('title','id')->all();
             $key = array_keys($faculties);
-            $departments = Department::where("faculty_id",$key[0])->pluck("title","id")->all();
+            $departments = Department::where('faculty_id',$key[0])->pluck('title','id')->all();
             $department_keys = array_keys($departments);
-            $groups = Group::whereIn("department_id",$department_keys)->pluck("title","id")->all();
+            $groups = Group::whereIn('department_id',$department_keys)->pluck('title','id')->all();
         }
         $userInfo = null;
         $hidden = true;
@@ -83,15 +84,45 @@ class UserController extends AppBaseController
      * @param CreateUserRequest $request
      *
      * @return Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $this->validate($request,["login"=>"required|unique:users","password"=>"required","firstName"=>"required","middleName"=>"required","lastName"=>"required",
-            "address"=>"required","birthDay"=>"required","nationality"=>"required","citizen"=>"required","cardNumber"=>"required|same:password","iin"=>"sometimes|unique:user_infos","idCard"=>"sometimes|unique:user_infos",],
-            ["required"=>"Поле :attribute обязательно для заполнения","unique"=>"Поле :attribute уже существует","same"=>"Поле зачетная книжка должна совпадать с паролем"],
-            ["login"=>"логин","password"=>"пароль","firstName"=>"имя","middleName"=>"отчество","lastName"=>"фамилия",
-                "address"=>"адрес","birthDay"=>"дата рождения","nationality"=>"национальность","citizen"=>"гражданство","cardNumber"=>"номер зачетной книжки/пароль","iin"=>"ИИН","idCard"=>"номер уд.личности(паспорта)",]
+        $this->validate($request,
+            [
+                'login'=> 'required|unique:users',
+                'password' => 'required',
+                'firstName' => 'required',
+                'middleName' => 'required',
+                'lastName' => 'required',
+                'birthDay' => 'required',
+                'nationality_id' => 'required',
+                'country_id' => 'required',
+                'cardNumber' => 'required|same:password',
+                'iin' => 'sometimes|unique:user_infos',
+                'idCard' => 'sometimes|unique:user_infos'
+            ],
+            [
+                'required' => 'Поле :attribute обязательно для заполнения',
+                'unique' => 'Поле :attribute уже существует',
+                'same' => 'Поле зачетная книжка должна совпадать с паролем'
+            ],
+            [
+                'Поле зачетная книжка должна совпадать с паролем' => 'логин',
+                'password' => 'пароль',
+                'firstName' => 'имя',
+                'middleName' => 'отчество',
+                'lastName' => 'фамилия',
+                'address' => 'адрес',
+                'birthDay' => 'дата рождения',
+                'nationality_id' => 'национальность',
+                'country_id' => 'гражданство',
+                'cardNumber' => 'номер зачетной книжки/пароль',
+                'iin' => 'ИИН',
+                'idCard' => 'номер уд.личности(паспорта)'
+            ]
         );
+
         $input = User::makeData($request->all());
         $user = User::create($input);
         if($user){
@@ -147,22 +178,22 @@ class UserController extends AppBaseController
         }
         if (Auth::user()->role_id == 1){
             $roles = Roles::pluck('title', 'id')->all();
-            $faculties = Faculty::pluck("title","id")->prepend("Не выбранно",0)->all();
-            $departments = Department::pluck("title","id")->prepend("Не выбранно",0)->all();
-            $groups = Group::pluck("title","id")->prepend("Не выбранно",0)->all();
+            $faculties = Faculty::pluck('title','id')->prepend('Не выбранно',0)->all();
+            $departments = Department::pluck('title','id')->prepend('Не выбранно',0)->all();
+            $groups = Group::pluck('title','id')->prepend('Не выбранно',0)->all();
         }
         if (Auth::user()->role_id == 2) {
             $roles = Roles::whereNotIn('id', [1,2,6])->pluck('title', 'id')->all();
-            $faculties = Faculty::where("id",Auth::user()->faculty_id)->pluck("title","id")->all();
+            $faculties = Faculty::where('id',Auth::user()->faculty_id)->pluck('title','id')->all();
             $key = array_keys($faculties);
-            $departments = Department::where("faculty_id",$key[0])->pluck("title","id")->prepend("Не выбранно",0)->all();
+            $departments = Department::where('faculty_id',$key[0])->pluck('title','id')->prepend('Не выбранно',0)->all();
             $department_keys = array_keys($departments);
-            $groups = Group::whereIn("department_id",$department_keys)->pluck("title","id")->prepend("Не выбранно",0)->all();
+            $groups = Group::whereIn('department_id',$department_keys)->pluck('title','id')->prepend('Не выбранно',0)->all();
         }
-        $userInfo = UserInfo::where("user_id",$id)->first();
+        $userInfo = UserInfo::where('user_id',$id)->first();
         $hidden = false;
 
-        return view('users.edit')->with(compact("user","roles","faculties","departments","groups","hidden","userInfo"));
+        return view('users.edit')->with(compact('user','roles','faculties','departments','groups','hidden','userInfo'));
     }
 
     /**
@@ -175,11 +206,39 @@ class UserController extends AppBaseController
      */
     public function update($id, Request $request)
     {
-        $this->validate($request,["login"=>"required|unique:users,id,$id","password"=>"required","firstName"=>"required","middleName"=>"required","lastName"=>"required",
-            "address"=>"required","birthDay"=>"required","nationality"=>"required","citizen"=>"required","cardNumber"=>"required|same:password","iin"=>"sometimes|unique:user_infos,user_id,$id","idCard"=>"sometimes|unique:user_infos,user_id,$id",],
-            ["required"=>"Поле :attribute обязательно для заполнения","unique"=>"Поле :attribute уже существует","same"=>"Поле зачетная книжка должна совпадать с паролем"],
-            ["login"=>"логин","password"=>"пароль","firstName"=>"имя","middleName"=>"отчество","lastName"=>"фамилия",
-                "address"=>"адрес","birthDay"=>"дата рождения","nationality"=>"национальность","citizen"=>"гражданство","cardNumber"=>"номер зачетной книжки/пароль","iin"=>"ИИН","idCard"=>"номер уд.личности(паспорта)",]
+        $this->validate($request, [
+                'login' => 'required|unique:users,id,$id',
+                'password' => 'required',
+                'firstName' => 'required',
+                'middleName' => 'required',
+                'lastName' => 'required',
+    //            'address' => 'required',
+                'birthDay' => 'required',
+                'nationality_id' =>'required',
+                'country_id' => 'required',
+                'cardNumber'=>'required|same:password',
+                'iin' => 'sometimes|unique:user_infos,user_id,$id',
+                'idCard' => 'sometimes|unique:user_infos,user_id,$id'
+            ],
+            [
+                'required' => 'Поле :attribute обязательно для заполнения',
+                'unique'=>'Поле :attribute уже существует',
+                'same'=>'Поле зачетная книжка должна совпадать с паролем'
+            ],
+            [
+                'login' =>'логин',
+                'password' =>'пароль',
+                'firstName' =>'имя',
+                'middleName' => 'отчество',
+                'lastName' => 'фамилия',
+                'address' =>'адрес',
+                'birthDay' => 'дата рождения',
+                'nationality_id' => 'национальность',
+                'country_id'=>'гражданство',
+                'cardNumber' => 'номер зачетной книжки/пароль',
+                'iin'=>'ИИН',
+                'idCard'=>'номер уд.личности(паспорта)'
+            ]
         );
         $user = $this->userRepository->find($id);
 
@@ -226,42 +285,42 @@ class UserController extends AppBaseController
 
     //different roles
     public function superAdmin(){
-        $users = User::where("id","!=",Auth::user()->id)->where("role_id",1)->paginate(30);
+        $users = User::where('id','!=',Auth::user()->id)->where('role_id',1)->paginate(30);
         return view('users.index')
             ->with('users', $users);
     }
     public function administrator(){
-        $users = User::where("role_id",2)->paginate(30);
+        $users = User::where('role_id',2)->paginate(30);
         return view('users.index')
             ->with('users', $users);
     }
 
     public function moderator(){
         if(Auth::user()->role_id == 1) {
-            $users = User::where("role_id", 3)->paginate(30);
+            $users = User::where('role_id', 3)->paginate(30);
         }
         if(Auth::user()->role_id == 2){
-            $users = User::where(["role_id"=>3,"faculty_id"=>Auth::user()->faculty_id])->paginate(30);
+            $users = User::where(['role_id'=>3,'faculty_id'=>Auth::user()->faculty_id])->paginate(30);
         }
         return view('users.index')
             ->with('users', $users);
     }
     public function teacher(){
         if(Auth::user()->role_id == 1) {
-            $users = User::where("role_id", 4)->paginate(30);
+            $users = User::where('role_id', 4)->paginate(30);
         }
         if(Auth::user()->role_id == 2){
-            $users = User::where(["role_id"=>4,"faculty_id"=>Auth::user()->faculty_id])->paginate(30);
+            $users = User::where(['role_id'=>4,'faculty_id'=>Auth::user()->faculty_id])->paginate(30);
         }
         return view('users.index')
             ->with('users', $users);
     }
     public function student(){
         if(Auth::user()->role_id == 1) {
-            $users = User::where("role_id", 5)->paginate(30);
+            $users = User::where('role_id', 5)->paginate(30);
         }
         if(Auth::user()->role_id == 2){
-            $users = User::where(["role_id"=>5,"faculty_id"=>Auth::user()->faculty_id])->paginate(30);
+            $users = User::where(['role_id'=>5,'faculty_id'=>Auth::user()->faculty_id])->paginate(30);
         }
         return view('users.index')
             ->with('users', $users);
@@ -277,7 +336,7 @@ class UserController extends AppBaseController
                     ExpelledStudent::expelStudent($id);
                 }
 
-                Flash::success("Успешно выполнено");
+                Flash::success('Успешно выполнено');
             }
         }
         else{
@@ -291,22 +350,22 @@ class UserController extends AppBaseController
     public function expelled(){
        $userIds = ExpelledStudent::getExpelledStudent();
         if(Auth::user()->role_id == 1){
-          $users = User::whereIn("id",$userIds)->paginate(30);
+          $users = User::whereIn('id',$userIds)->paginate(30);
         }
         if(Auth::user()->role_id == 2){
-            $users = User::whereIn("id",$userIds)->where("faculty_id",Auth::user()->faculty_id)->paginate(30);
+            $users = User::whereIn('id',$userIds)->where('faculty_id',Auth::user()->faculty_id)->paginate(30);
         }
-        return view("users.index",compact("users"));
+        return view('users.index',compact('users'));
     }
     public function active(){
         $userIds = ExpelledStudent::getExpelledStudent();
         if(Auth::user()->role_id == 1){
-            $users = User::whereNotIn("id",$userIds)->where("role_id",5)->paginate(30);
+            $users = User::whereNotIn('id',$userIds)->where('role_id',5)->paginate(30);
         }
         if(Auth::user()->role_id == 2){
-            $users = User::whereNotIn("id",$userIds)->where(["faculty_id"=>Auth::user()->faculty_id,"role_id"=>5])->paginate(30);
+            $users = User::whereNotIn('id',$userIds)->where(['faculty_id'=>Auth::user()->faculty_id,'role_id'=>5])->paginate(30);
         }
-        return view("users.index",compact("users"));
+        return view('users.index',compact('users'));
     }
 
 

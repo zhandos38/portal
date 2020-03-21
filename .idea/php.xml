@@ -100,11 +100,6 @@
       <path value="$PROJECT_DIR$/vendor/devdojo/chatter" />
       <path value="$PROJECT_DIR$/vendor/luketowers/purifier" />
       <path value="$PROJECT_DIR$/vendor/symfony/mime" />
-      <path value="$PROJECT_DIR$/vendor/dniccum/phone-number" />
-      <path value="$PROJECT_DIR$/vendor/giggsey/locale" />
-      <path value="$PROJECT_DIR$/vendor/propaganistas/laravel-phone" />
-      <path value="$PROJECT_DIR$/vendor/league/iso3166" />
-      <path value="$PROJECT_DIR$/vendor/giggsey/libphonenumber-for-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

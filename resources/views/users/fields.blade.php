@@ -69,7 +69,7 @@
         <!-- Phone Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('phone', 'Телефон:') !!}
-            {!! PhoneNumber::make('Phone Number')->format('###-###-####') !!}
+            {!! Form::text('phone', null, ['class' => 'form-control']) !!}
         </div>
 
         <!-- Email Field -->
@@ -87,13 +87,16 @@
         <!-- Gender Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('gender_id', 'Пол:') !!}
-            {!! Form::select('gender_id',["мужской"=>"мужской","женский"=>"женский"], null, ['class' => 'form-control']) !!}
+            {!! Form::select('gender_id',[
+                0 => 'мужской',
+                1 => 'женский'
+            ], null, ['class' => 'form-control']) !!}
         </div>
 
         <!-- Nationality Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('nationality_id', 'Национальность:') !!}
-            {!! Form::select('nationality_id', \App\Models\Nationality::pluck('title', 'title')->all() ,null, ['class' => 'form-control']) !!}
+            {!! Form::select('nationality_id', \App\Models\Nationality::pluck('title', 'id')->all() ,null, ['class' => 'form-control']) !!}
         </div>
 
         <!-- Idcard Field -->
@@ -117,7 +120,7 @@
         <!-- Citizen Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('country_id', 'Гражданство:') !!}
-            {!! Form::select('country_id', \App\Models\Country::pluck('title', 'title')->all(), null, ['class' => 'form-control']) !!}
+            {!! Form::select('country_id', \App\Models\Country::pluck('title', 'id')->all(), null, ['class' => 'form-control']) !!}
         </div>
     @elseif($userInfo)
         <div class="form-group col-sm-6">
@@ -169,13 +172,16 @@
         <!-- Gender Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('gender_id', 'Пол:') !!}
-            {!! Form::select('gender_id',["мужской"=>"мужской","женский"=>"женский"], null, ['class' => 'form-control']) !!}
+            {!! Form::select('gender_id',[
+                0 => 'мужской',
+                1 => 'женский'
+            ], null, ['class' => 'form-control']) !!}
         </div>
 
         <!-- Nationality Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('nationality_id', 'Национальность:') !!}
-            {!! Form::select('nationality_id', \App\Models\Nationality::pluck('title', 'title')->all() ,null, ['class' => 'form-control']) !!}
+            {!! Form::select('nationality_id', \App\Models\Nationality::pluck('title', 'id')->all() ,null, ['class' => 'form-control']) !!}
         </div>
 
         <!-- Idcard Field -->
@@ -199,7 +205,7 @@
         <!-- Citizen Field -->
         <div class="form-group col-sm-6">
             {!! Form::label('country_id', 'Гражданство:') !!}
-            {!! Form::select('country_id', \App\Models\Country::pluck('title', 'title')->all(), null, ['class' => 'form-control']) !!}
+            {!! Form::select('country_id', \App\Models\Country::pluck('title', 'id')->all(), null, ['class' => 'form-control']) !!}
         </div>
     @endif
 

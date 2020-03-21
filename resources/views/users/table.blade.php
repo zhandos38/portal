@@ -22,8 +22,8 @@
             <tr>
                 <td>{{ $user->roles->title }}</td>
                 <td>{{ $user->login }}</td>
-                <td>{{ $user->faculty_id != null ? $user->faculties->title : 'Нет указано'}}</td>
-                <td>{{ $user->department_id != null ? $user->departments->title : 'Нет указано' }}</td>
+                <td>{{ !empty($user->faculties) ? $user->faculties->title : 'Нет указано'}}</td>
+                <td>{{ !empty($user->departments) ? $user->departments->title : 'Нет указано' }}</td>
                 <td>{{ !empty($user->groups) ? $user->groups->title : 'Нет указано'}}</td>
                 <td>
                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
