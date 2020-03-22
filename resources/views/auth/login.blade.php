@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ADMIN LTE</title>
+    <title>Учебный портал | Вход</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -36,6 +36,7 @@
 <div class="login-box">
     <div class="login-logo">
         <a href="{{ url('/home') }}"><b>Портал </b>университета</a>
+        <h1>Silk<b>Way</b></h1>
     </div>
 
     <!-- /.login-logo -->
@@ -46,7 +47,7 @@
             @csrf
 
             <div class="form-group has-feedback {{ $errors->has('login') ? ' has-error' : '' }}">
-                <input type="text" class="form-control" name="login" value="{{ old('login') }}" placeholder="Фамилия">
+                <input type="text" class="form-control" name="login" value="{{ old('login') }}" placeholder="Логин">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 @if ($errors->has('login'))
                     <span class="help-block">

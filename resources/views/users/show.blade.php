@@ -19,13 +19,13 @@
                                 <b>Роль:</b> <a class="pull-right">{{ $user->roles->title }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Факультет:</b> <a class="pull-right">{{ $user->faculty_id != 0 ? $user->faculties->title : 'Нет' }}</a>
+                                <b>Факультет:</b> <a class="pull-right">{{ !empty($user->faculties) ? $user->faculties->title : 'Нет' }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Кафедра:</b> <a class="pull-right">{{ $user->department_id != 0 ? $user->departments->title : 'Нет' }}</a>
+                                <b>Кафедра:</b> <a class="pull-right">{{ !empty($user->departments) ? $user->departments->title : 'Нет' }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Группа:</b> <a class="pull-right">{{ $user->group_id != 0 ? $user->groups->title : 'Нет' }}</a>
+                                <b>Группа:</b> <a class="pull-right">{{ !empty($user->groups) ? $user->groups->title : 'Нет' }}</a>
                             </li>
                         </ul>
 

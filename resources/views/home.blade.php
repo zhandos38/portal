@@ -5,7 +5,7 @@
     <section class="content">
         <div class="col-md-12">
             <div class="callout callout-info">
-                <h3>Привет,{{\Illuminate\Support\Facades\Auth::user()->login}}!</h3>
+                <h3>Привет, {{\Illuminate\Support\Facades\Auth::user()->login}}!</h3>
             </div>
         </div>
         <!-- Small boxes (Stat box) -->

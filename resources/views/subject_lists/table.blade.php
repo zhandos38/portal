@@ -14,12 +14,12 @@
         <tbody>
         @foreach($subjectLists as $subjectList)
             <tr>
-                <td>{{ $subjectList->semester->title }}</td>
-            <td>{{ $subjectList->group->title }}</td>
-            <td>{{ $subjectList->subject->title }}</td>
-            <td>{{$subjectList->student->infos->lastName}} {{ $subjectList->student->infos->firstName }}</td>
-            <td>{{ $subjectList->credits }}</td>
-            <td>{{ $subjectList->ECTS }}</td>
+                <td>{{ !empty($subjectList->semester) ? $subjectList->semester->title : 'Не указано' }}</td>
+                <td>{{ !empty($subjectList->group) ? $subjectList->group->title : 'Не указано' }}</td>
+                <td>{{ !empty($subjectList->subject) ? $subjectList->subject->title : 'Не указано'}}</td>
+                <td>{{ !empty($subjectList->student) ? $subjectList->student->infos->lastName . ' ' .  $subjectList->student->infos->firstName : 'Не указано'}}</td>
+                <td>{{ !empty($subjectList->credits) ? $subjectList->credits : 'Не указано' }}</td>
+                <td>{{ !empty($subjectList->ECTS) ? $subjectList->ECTS : 'Не указано' }}</td>
                 <td>
                     {!! Form::open(['route' => ['subjectLists.destroy', $subjectList->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

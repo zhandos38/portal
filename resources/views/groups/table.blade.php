@@ -12,10 +12,10 @@
         <tbody>
         @foreach($groups as $group)
             <tr>
-                <td>{{ $group->departments->title }}</td>
-            <td>{{ $group->title }}</td>
-            <td>{{ $group->languages->title }}</td>
-            <td>{{ $group->educations->title }}</td>
+                <td>{{ !empty($group->departments) ? $group->departments->title : 'Не указано' }}</td>
+                <td>{{ !empty($group->title) ? $group->title : 'Не указано' }}</td>
+                <td>{{ !empty($group->languages) ? $group->languages->title : 'Не указано' }}</td>
+                <td>{{ $group->educations->title }}</td>
                 <td>
                     {!! Form::open(['route' => ['groups.destroy', $group->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
