@@ -42,11 +42,11 @@ class UserController extends AppBaseController
 
         if (Auth::user()->role_id == 1){
 //            $roles = Roles::pluck('title', 'id')->all();
-        $users = User::where('id', '!=', Auth::user()->id)->get();
+        $users = User::where('id', '!=', Auth::user()->id)->paginate(30);
     }
         if (Auth::user()->role_id == 2) {
 //            $roles = Roles::whereNotIn('id', [1,2,6])->pluck('title', 'id')->all();
-            $users = User::whereNotIn('id',[1,2,6,5])->where('faculty_id', Auth::user()->faculty_id)->get();
+            $users = User::whereNotIn('id',[1,2,6,5])->where('faculty_id', Auth::user()->faculty_id)->paginate(30);
         }
         return view('users.index')
             ->with(compact('users'));
