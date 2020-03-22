@@ -30,11 +30,11 @@
                         <tbody>
                         @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->roles->title }}</td>
+                                <td>{{ isset($user->roles->title) ? $user->roles->title : 'Не указано' }}</td>
                                 <td>{{ $user->login }}</td>
-                                <td>{{ $user->faculty_id != 0 ? $user->faculties->title : "Нет"  }}</td>
-                                <td>{{ $user->department_id != 0 ? $user->departments->title :"Нет" }}</td>
-                                <td>{{ $user->group_id !=0 ? $user->groups->title : "Нет" }}</td>
+                                <td>{{ isset($user->faculty_id) ? $user->faculties->title : "Нет"  }}</td>
+                                <td>{{ isset($user->department_id) ? $user->departments->title :"Нет" }}</td>
+{{--                                <td>{{ isset($user->group_id) ? $user->groups->title : "Нет" }}</td>--}}
                                 <td>
                                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
                                     <div class='btn-group'>
