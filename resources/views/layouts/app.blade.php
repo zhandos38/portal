@@ -145,7 +145,7 @@
     <script type="text/javascript" src="js/rating.js"></script>
     <script type="text/javascript" src="js/myScripts.js"></script>
     <script src="/js/datatables.min.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript">
     // function myFunction() {
     //     // Declare variables
     //     var input, filter, table, tr, td, i, txtValue;

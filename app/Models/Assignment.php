@@ -58,11 +58,9 @@ class Assignment extends Model
         'subject_id',
         'teacher_id',
         'student_id',
-        'first_lection',
-        'first_practice',
+        'first_rating_week',
         'first_rating',
-        'second_lection',
-        'second_practice',
+        'second_rating_week',
         'second_rating',
         'exam_rating',
         'total_rating'
@@ -221,8 +219,20 @@ class Assignment extends Model
                     $str .= "<thead>
                     <tr>
                     <th>ФИО</th>
-                    <th>1 рубежка</th>
-                    <th>2 рубежка</th>
+                    <th>1н</th>
+                    <th>2н</th>
+                    <th>3н</th>
+                    <th>4н</th>
+                    <th>5н</th>
+                    <th>6н</th>
+                    <th>7н</th>
+                    <th>1н</th>
+                    <th>2н</th>
+                    <th>3н</th>
+                    <th>4н</th>
+                    <th>5н</th>
+                    <th>6н</th>
+                    <th>7н</th>
                     <th>Экзамен</th>
                     <th>Общий рейтинг</th>
                     </tr>
@@ -233,16 +243,32 @@ class Assignment extends Model
                         $student_assignment = Assignment::where(["semester_id" => $request['semesterId'], "group_id" => $request['groupId'], "subject_id" => $request['subjectId'], "student_id"=>$student->id])->first();
                         if($student_assignment){
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_rating]\"  value=\"$student_assignment->first_rating\"></td>";
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_rating]\" value=\"$student_assignment->second_rating\"></td>";
+                            foreach (json_decode($student_assignment->first_rating_week,1) as $item) {
+                                $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=\"$item\"></td>";
+                            }
+                            foreach (json_decode($student_assignment->second_rating_week,1) as $item) {
+                                $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value=\"$item\"></td>";
+                            }
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][exam_rating]\"  value=\"$student_assignment->exam_rating\"></td>";
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][total_rating]\"  value=\"$student_assignment->total_rating\"disabled></td>";
                             $str.="</tr>";
                         }
                         else{
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_rating]\"  value=0></td>";
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_rating]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
+                            $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\"  value=0></td>";
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][exam_rating]\"  value=0></td>";
                             $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][total_rating]\"  value=0 disabled></td>";
                             $str.="</tr>";
@@ -259,166 +285,108 @@ class Assignment extends Model
                     $str .= "<thead>
                     <tr>
                     <th>ФИО</th>
-                    <th>Лекционные занятия 18 из 30(60%)</th>
-                    <th>Практические занятия 12 из 30(40%)</th>
+                    <th>1н</th>
+                    <th>2н</th>
+                    <th>3н</th>
+                    <th>4н</th>
+                    <th>5н</th>
+                    <th>6н</th>
+                    <th>7н</th>
                     <th>Общий рейтинг</th>
                     </tr>
                     </thead>
                     <tbody>";
-                    foreach ($students as $key => $student){
-                        $str .="<tr>";
-                        $student_assignment = Assignment::where(["semester_id" => $request['semesterId'], "group_id" => $request['groupId'], "subject_id" => $request['subjectId'], "student_id"=>$student->id])->first();
-                        // if student assignment exists
-                        if($student_assignment){
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
-                            //first step
-                            if($semester->step == 1){
-                                if($student_assignment->first_lection == null || $student_assignment->first_practice == null) {
-                                    //if teacher has lesson and practice
-                                    if(in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                        if($student_assignment->first_lection == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\"  max='18' min='0'></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\" disabled></td>";
-                                        }
-                                        if($student_assignment->first_practice == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\"  max='12' min='0'></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\" disabled></td>";
-                                        }
-                                    }
-                                    //if teacher has only lesson
-                                    if(in_array(1,$lesson_types) && !in_array(2,$lesson_types)){
-                                        if($student_assignment->first_lection == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\"  max='18' min='0'></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\" disabled></td>";
+                    if ($semester->step == 0){
+                        $str .= "<td>Доступ закрыт!</td>";
+                    } else {
+                        if(!in_array(3,$lesson_types)){
+                            foreach ($students as $key => $student){
+                                $str .="<tr>";
+                                $student_assignment = Assignment::where(["semester_id" => $request['semesterId'], "group_id" => $request['groupId'], "subject_id" => $request['subjectId'], "student_id"=>$student->id])->first();
+                                // if student assignment exists
+                                if($student_assignment){
 
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\" disabled></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\" disabled></td>";
+                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
+                                    //first step
+                                    if($semester->step == 1){
 
+                                        if($student_assignment->first_rating_week == null) {
+                                            //if teacher has lesson and practice
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" min='0' max='100'></td>";
                                         }
-                                    }
-                                    //if teacher has only practice
-                                    if(!in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                        if($student_assignment->first_practice == null){
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\" disabled></td>";
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\"  max='12' min='0'></td>";
-                                        }
+                                        //if student has and practice and lection rating!
                                         else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\" disabled></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\" disabled></td>";
+                                            foreach (json_decode($student_assignment->first_rating_week, 1) as $item) {
+                                                $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=\"$item\" disabled></td>";
+                                            }
+                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_rating]\"  value=\"$student_assignment->first_rating\" disabled></td>";
                                         }
+
+
                                     }
+                                    //second step
+                                    if($semester->step == 2){
+                                        if($student_assignment->second_rating_week == null) {
+                                            //if teacher has lesson and practice
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                            $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        }
+                                        //if student has and practice and lection rating!
+                                        else{
+                                            foreach (json_decode($student_assignment->second_rating_week, 1) as $item) {
+                                                $str .= "<td><input type='text' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\"  value=\"$item\" disabled></td>";
+                                            }
+                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_rating]\"  value=\"$student_assignment->second_rating\" disabled></td>";
+                                        }
+
+                                    }
+
+                                    $str.="</tr>";
+
+
                                 }
-                                //if student has and practice and lection rating!
+                                //if student assignment doesnt exist
                                 else{
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=\"$student_assignment->first_lection\" disabled></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=\"$student_assignment->first_practice\" disabled></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_rating]\"  value=\"$student_assignment->first_rating\" disabled></td>";
-                                }
-                            }
-                            //second step
-                            if($semester->step == 2){
-                                if($student_assignment->second_lection == null || $student_assignment->second_practice == null){
-                                    //if teacher has lesson and practice
-                                    if(in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                        if($student_assignment->second_lection == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\"  max='18' min='0'></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\" disabled></td>";
-                                        }
-                                        if($student_assignment->second_practice == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\"  max='12' min='0'></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\" disabled></td>";
-                                        }
+                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
+                                    if($semester->step == 1){
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][first_rating_week][]\" value='0' min='0' max='100'></td>";
                                     }
-                                    //if teacher has only lesson
-                                    if(in_array(1,$lesson_types) && !in_array(2,$lesson_types)){
-                                        if($student_assignment->second_lection == null){
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\"  max='18' min='0'></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\" disabled></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\" disabled></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\" disabled></td>";
-
-                                        }
-                                    }
-                                    //if teacher has only practice
-                                    if(!in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                        if($student_assignment->second_practice == null){
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\" disabled></td>";
-                                            $str .= "<td><input type='number' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\"  max='12' min='0'></td>";
-                                        }
-                                        else{
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\" disabled></td>";
-                                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\" disabled></td>";
-                                        }
+                                    if($semester->step == 2){
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
+                                        $str .= "<td><input type='number' class='form-control validation-number' name=\"rating[$student->id][second_rating_week][]\" value='0' min='0' max='100'></td>";
                                     }
 
-                                }
-                                //if student has assignment for second rating
-                                //if student has and practice and lection rating!
-                                else{
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=\"$student_assignment->second_lection\" disabled></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=\"$student_assignment->second_practice\" disabled></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_rating]\"  value=\"$student_assignment->second_rating\" disabled></td>";
+                                    $str.="</tr>";
                                 }
 
                             }
-                            $str.="</tr>";
+                        } else {
+                            $str .= "<td>Недостаточно прав!</td>";
                         }
-                        //if student assignment doesnt exist
-                        else{
-                            $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][student]\"  value=\"$student->login\" disabled placeholder=\"$student->login\"></td>";
-                            if($semester->step == 1){
-                                if(in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value=0 max='18' min='0'></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=0 max='12' min='0'></td>";
-                                }
-                                //if teacher has only lesson
-                                if(in_array(1,$lesson_types) && !in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  value= 0  max='18' min='0'></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  disabled ></td>";
-                                }
-                                //if teacher has only practice
-                                if(!in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_lection]\"  disabled></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][first_practice]\"  value=0  max='12' min='0'></td>";
-                                }
-
-
-                            }
-                            if($semester->step == 2){
-                                if(in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value=0  max='18' min='0'></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=0  max='12' min='0'></td>";
-                                }
-                                //if teacher has only lesson
-                                if(in_array(1,$lesson_types) && !in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  value= 0  max='18' min='0'></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=0 disabled  max='12' min='0'></td>";
-                                }
-                                //if teacher has only practice
-                                if(!in_array(1,$lesson_types) && in_array(2,$lesson_types)){
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_lection]\"  disabled  max='18' min='0'></td>";
-                                    $str .= "<td><input type='text' class='form-control' name=\"rating[$student->id][second_practice]\"  value=0  max='12' min='0'></td>";
-                                }
-
-                            }
-
-                            $str.="</tr>";
-                        }
-
-
                     }
+
                     $str .="</tbody>";
                     return $str;
                 }
@@ -435,42 +403,30 @@ class Assignment extends Model
         $subject_id = $request->get("subject_id");
         $teacher_id = $request->get("teacher_id");
         $ratings = $request->get("rating");
+//        dd($ratings);
         if(isset($ratings)){
             foreach ($ratings as $key =>$value){
                 $student = Assignment::where(["semester_id" => $semester_id, "group_id" => $group_id, "subject_id" => $subject_id, "student_id"=>$key])->first();
-
-                if($value["first_rating"]<0 || !is_numeric($value["first_rating"]) || $value["first_rating"] === null){
-                    $value["first_rating"] = 0;
-                    $value["first_lection"] = 0;
-                    $value["first_practice"] = 0;
-                }
-                if($value["first_rating"]>30){
-                    $value["first_rating"] = 30;
-                    $value["first_lection"] = 18;
-                    $value["first_practice"] = 12;
+                $first_rating = [];
+                $first_rating_week = [];
+                if (!empty($value['first_rating_week'])){
+                    $first_rating = round(array_sum($value['first_rating_week'])/7 * 0.3);
+                    $first_rating_week = json_encode($value['first_rating_week']);
                 }
                 else{
-                    $value["first_lection"] = round($value["first_rating"]/100 * 60) ;
-                    $value["first_practice"] =  $value["first_rating"] -  $value["first_lection"];
-
+                    $first_rating = 0;
+                    $first_rating_week = json_encode([0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0]);
                 }
-
-
-                if($value["second_rating"] < 0 || !is_numeric($value["second_rating"]) || $value["second_rating"] === null){
-                    $value["second_rating"] = 0;
-                    $value["second_lection"] = 0;
-                    $value["second_practice"] = 0;
-                }
-                if($value["second_rating"]>30){
-                    $value["second_rating"] = 30;
-                    $value["second_lection"] = 18;
-                    $value["second_practice"] = 12;
+                $second_rating = [];
+                $second_rating_week = [];
+                if (!empty($value['second_rating_week'])){
+                    $second_rating = round(array_sum($value['second_rating_week'])/7 * 0.3);
+                    $second_rating_week = json_encode($value['second_rating_week']);
                 }
                 else{
-                    $value["second_lection"] = round($value["second_rating"]/100 * 60) ;
-                    $value["second_practice"] =  $value["second_rating"] -  $value["second_lection"];
+                    $second_rating = 0;
+                    $second_rating_week = json_encode([0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0]);
                 }
-
 
                 if($value["exam_rating"] < 0 || !is_numeric($value["exam_rating"]) || $value["exam_rating"] === null){
                     $value["exam_rating"] = 0;
@@ -479,17 +435,16 @@ class Assignment extends Model
                     $value["exam_rating"] = 40;
                 }
 
-                if(isset($value["first_rating"]) && isset($value["second_rating"]) && isset($value["exam_rating"])){
-                    $value["total_rating"] = $value["first_rating"] + $value["second_rating"] + $value["exam_rating"];
+                if(isset($first_rating) && isset($second_rating) && isset($value["exam_rating"])){
+                    $value["total_rating"] = $first_rating + $second_rating + $value["exam_rating"];
                 }
+
                 if(Auth::user()->role_id == 1){
                     if($student){
-                        $student->first_lection = $value["first_lection"];
-                        $student->first_practice = $value["first_practice"];
-                        $student->first_rating = $value["first_rating"];
-                        $student->second_lection = $value["second_lection"];
-                        $student->second_practice = $value["second_practice"];
-                        $student->second_rating = $value["second_rating"];
+                        $student->first_rating = $first_rating;
+                        $student->first_rating_week = $first_rating_week;
+                        $student->second_rating = $second_rating;
+                        $student->second_rating_week = $second_rating_week;
                         $student->exam_rating = $value["exam_rating"];
                         $student->total_rating = $value["total_rating"];
                         $student->teacher_id = $teacher_id;
@@ -503,12 +458,10 @@ class Assignment extends Model
                         $studentIndex["subject_id"] = $subject_id;
                         $studentIndex["teacher_id"] = $teacher_id;
                         $studentIndex["student_id"] = $key;
-                        $studentIndex["first_lection"] = $value["first_lection"];
-                        $studentIndex["first_practice"] = $value["first_practice"];
-                        $studentIndex["first_rating"] = $value["first_rating"];
-                        $studentIndex["second_lection"] = $value["second_lection"];
-                        $studentIndex["second_practice"] = $value["second_practice"];
-                        $studentIndex["second_rating"] = $value["second_rating"];
+                        $studentIndex["first_rating"] = $first_rating;
+                        $studentIndex["first_rating_week"] = $first_rating_week;
+                        $studentIndex["second_rating"] = $second_rating;
+                        $studentIndex["second_rating_week"] = $second_rating_week;
                         $studentIndex["exam_rating"] = $value["exam_rating"];
                         $studentIndex["total_rating"] = $value["total_rating"];
                         $assignment->fill($studentIndex);
@@ -533,174 +486,89 @@ class Assignment extends Model
             if(count($ratings)>0){
                 foreach ($ratings as $key => $value){
                     $student = Assignment::where(["semester_id" => $semester_id, "group_id" => $group_id, "subject_id" => $subject_id, "student_id"=>$key])->first();
+                    $first_rating = [];
+                    $first_rating_week = [];
+                    if (!empty($value['first_rating_week'])){
+                        $first_rating = round(array_sum($value['first_rating_week'])/7 * 0.3);
+                        $first_rating_week = json_encode($value['first_rating_week']);
+                    }
+                    else{
+                        $first_rating = 0;
+                        $first_rating_week = json_encode([0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0]);
+                    }
+                    $second_rating = [];
+                    $second_rating_week = [];
+                    if (!empty($value['second_rating_week'])){
+                        $second_rating = round(array_sum($value['second_rating_week'])/7 * 0.3);
+                        $second_rating_week = json_encode($value['second_rating_week']);
+                    }
+                    else{
+                        $second_rating = 0;
+                        $second_rating_week = json_encode([0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0]);
+                    }
                     //first step
                     if($semester->step == 1){
                         if($student){
-                            if(in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                if($student->first_lection == null && $student->first_practice == null) {
-                                    $student->first_lection = $value["first_lection"];
-                                    $student->first_practice = $value["first_practice"];
-                                    $student->first_rating = $value["first_lection"] + $value["first_practice"];
-                                    $student->total_rating += $student->first_rating;
-                                    $student->save();
-                                }
-                            }
-                            if(in_array(1,$lessonTypes) && !in_array(2,$lessonTypes)){
-                                if($student->first_lection == null) {
-                                    $student->first_lection = $value["first_lection"];
-                                    $student->first_rating = $value["first_lection"] + $student->first_practice;
-                                    $student->total_rating += $value["first_lection"];
-                                    $student->save();
-                                }
-                            }
-                            if(!in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                if($student->first_practice == null) {
-                                    $student->first_practice = $value["first_practice"];
-                                    $student->first_rating = $value["first_practice"] + $student->first_lection;
-                                    $student->total_rating += $value["first_practice"];
-                                    $student->save();
-                                }
+                            if($student->first_rating_week == null) {
+                                $student->first_rating = $first_rating;
+                                $student->first_rating_week = $first_rating_week;
+                                $student->total_rating = $first_rating;
+                                $student->save();
                             }
                         }
                         else{
-                            if(in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["first_lection"] = $value["first_lection"];
-                                $studentIndex["first_practice"] = $value["first_practice"];
-                                $studentIndex["first_rating"] = $value["first_lection"] +  $value["first_practice"];
-                                $studentIndex["total_rating"] = $studentIndex["first_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
+                            $assignment = new static();
+                            $studentIndex=[];
+                            $studentIndex["semester_id"] = $semester_id;
+                            $studentIndex["group_id"] = $group_id;
+                            $studentIndex["subject_id"] = $subject_id;
+                            $studentIndex["teacher_id"] = $teacher_id;
+                            $studentIndex["student_id"] = $key;
+                            $studentIndex["first_rating"] = $first_rating;
+                            $studentIndex["first_rating_week"] = $first_rating_week;
+                            $studentIndex["total_rating"] = $first_rating;
+                            $assignment->fill($studentIndex);
+                            $assignment->save();
 
-                            }
-                            //if teacher has only lection
-                            if(in_array(1,$lessonTypes) && !in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["first_lection"] = $value["first_lection"];
-                                $studentIndex["first_rating"] = $value["first_lection"];
-                                $studentIndex["total_rating"] = $studentIndex["first_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
-                            }
-                            //if teacher has only practice
-                            if(!in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["first_practice"] = $value["first_practice"];
-                                $studentIndex["first_rating"] = $value["first_practice"];
-                                $studentIndex["total_rating"] = $studentIndex["first_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
-                            }
                         }
-
                     }
+
+
+
                     //second step
                     if($semester->step == 2){
                         if($student){
-                            if(in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                if($student->second_lection == null && $student->second_practice == null){
-                                    $student->second_lection = $value["second_lection"];
-                                    $student->second_practice = $value["second_practice"];
-                                    $student->second_rating = $value["second_lection"] + $value["second_practice"];
-                                    $student->total_rating += $student->second_rating;
-                                    $student->save();
-                                }
+                            if($student->second_rating_week == null) {
+                                $student->second_rating = $second_rating;
+                                $student->second_rating_week = $second_rating_week;
+                                $student->total_rating = $student->first_rating + $second_rating;
+                                $student->save();
                             }
-                            if(in_array(1,$lessonTypes) && !in_array(2,$lessonTypes)){
-                                if($student->second_lection == null) {
-                                    $student->second_lection = $value["second_lection"];
-                                    $student->second_rating = $value["second_lection"] + $student->second_practice;
-                                    $student->total_rating += $value["second_lection"];
-                                    $student->save();
-                                }
-                            }
-                            if(!in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                if($student->second_practice == null) {
-                                    $student->second_practice = $value["second_practice"];
-                                    $student->second_rating = $value["second_practice"] + $student->second_lection;
-                                    $student->total_rating += $value["second_practice"];
-                                    $student->save();
-                                }
-                            }
-
-
                         }
                         else{
-                            if(in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["second_lection"] = $value["second_lection"];
-                                $studentIndex["second_practice"] = $value["second_practice"];
-                                $studentIndex["second_rating"] = $value["second_lection"] +  $value["second_practice"];
-                                $studentIndex["total_rating"] = $studentIndex["second_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
+                            $assignment = new static();
+                            $studentIndex=[];
+                            $studentIndex["semester_id"] = $semester_id;
+                            $studentIndex["group_id"] = $group_id;
+                            $studentIndex["subject_id"] = $subject_id;
+                            $studentIndex["teacher_id"] = $teacher_id;
+                            $studentIndex["student_id"] = $key;
+                            $studentIndex["second_rating"] = $second_rating;
+                            $studentIndex["second_rating_week"] = $second_rating_week;
+                            $studentIndex["total_rating"] = $assignment->first_rating + $second_rating;
+                            $assignment->fill($studentIndex);
+                            $assignment->save();
 
-                            }
-                            //if teacher has only lection
-                            if(in_array(1,$lessonTypes) && !in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["second_lection"] = $value["second_lection"];
-                                $studentIndex["second_rating"] = $value["second_lection"];
-                                $studentIndex["total_rating"] = $studentIndex["second_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
-                            }
-                            //if teacher has only practice
-                            if(!in_array(1,$lessonTypes) && in_array(2,$lessonTypes)){
-                                $assignment = new static();
-                                $studentIndex=[];
-                                $studentIndex["semester_id"] = $semester_id;
-                                $studentIndex["group_id"] = $group_id;
-                                $studentIndex["subject_id"] = $subject_id;
-                                $studentIndex["teacher_id"] = $teacher_id;
-                                $studentIndex["student_id"] = $key;
-                                $studentIndex["second_practice"] = $value["second_practice"];
-                                $studentIndex["second_rating"] = $value["second_practice"];
-                                $studentIndex["total_rating"] = $studentIndex["second_rating"];
-                                $assignment->fill($studentIndex);
-                                $assignment->save();
-                            }
                         }
 
                     }
 
-
-
                 }
+
             }
         }
-
     }
+
 
 
     public static function getMark($schedule_id,$user_id,$total){
