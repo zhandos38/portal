@@ -1,7 +1,15 @@
 <!-- Semester Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('semester_id', 'Семестр:') !!}
-    {!! Form::select('semester_id', \App\Models\Semester::pluck('title', 'id')->prepend('Выберите семестр', '')->all(), null, ['class' => 'form-control', 'id' => 'divSemester']) !!}
+    @php
+        if (\Illuminate\Support\Facades\Auth::user()->role_id == 1) {
+            $semesters = \App\Models\Semester::pluck('title', 'id')->prepend('Выберите семестр', '')->all();
+        }
+        if (\Illuminate\Support\Facades\Auth::user()->role_id == 4) {
+            $semesters = \App\Models\Semester::where('current', 1)->pluck('title', 'id')->prepend('Выберите семестр', '')->all();
+        }
+    @endphp
+    {!! Form::select('semester_id', $semesters, null, ['class' => 'form-control', 'id' => 'divSemester']) !!}
 </div>
 
 <!-- Group Id Field -->
