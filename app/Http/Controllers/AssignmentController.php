@@ -79,11 +79,9 @@ class AssignmentController extends AppBaseController
             Assignment::makeData($request);
         }
         if(Auth::user()->role_id == 4){
-            $this->validate($request,["rating.*.first_lection"=>"sometimes|numeric|min:0|max:18","rating.*.first_practice"=>"sometimes|numeric|min:0|max:12","rating.*.second_lection"=>"sometimes|numeric|min:0|max:18","rating.*.second_practice"=>"sometimes|numeric|min:0|max:12"],
-                ["numeric"=>"Поле :attribute должен быть валидным числом","min"=>"Значения поля :attribute не должно быть ниже 0", "max"=>"Значения поля :attribute не должно быть выше :max"],
-                ["rating.*.first_lection"=>"лекционные занятия","rating.*.first_practice"=>"Практические занятия","rating.*.second_lection"=>"лекционные занятия","rating.*.second_practice"=>"практические занятия"]
+            $this->validate($request,["rating.*.first_rating_week"=>"sometimes","rating.*.second_rating_week"=>"sometimes"],
+                ["rating.*.first_rating_week"=>"1 руб неделя","rating.*.second_rating_week"=>"2 руб неделя"]
             );
-
 
             Assignment::makeTeacherData($request);
         }
