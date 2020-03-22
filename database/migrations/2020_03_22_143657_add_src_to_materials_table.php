@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSubjectListIdToLibrariesTable extends Migration
+class AddSrcToMaterialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSubjectListIdToLibrariesTable extends Migration
      */
     public function up()
     {
-        Schema::table('libraries', function (Blueprint $table) {
-            $table->integer('subject_list_id');
+        Schema::table('materials', function (Blueprint $table) {
+            $table->string('src')->after('description');
         });
     }
 
@@ -25,8 +25,8 @@ class AddSubjectListIdToLibrariesTable extends Migration
      */
     public function down()
     {
-        Schema::table('libraries', function (Blueprint $table) {
-            $table->dropColumn('subject_list_id');
+        Schema::table('materials', function (Blueprint $table) {
+            $table->dropColumn('src');
         });
     }
 }
